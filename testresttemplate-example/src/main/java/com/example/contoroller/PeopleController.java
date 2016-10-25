@@ -11,16 +11,35 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Controller
 public class PeopleController {
     @ResponseBody
-    @RequestMapping(value = "/api/people", method = RequestMethod.GET)
-    public People getPeople() {
+    @RequestMapping(value = "/api/people/{country}", method = RequestMethod.GET)
+    public People getPeople(@PathVariable String country) {
         People people = new People();
         people.setCountry("Japan");
         people.setYear(2001);
         people.setPopulation(1_000_000);
         return people;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/api/people", method = RequestMethod.GET)
+    public List<People> getPeopleList() {
+        People japan = new People();
+        japan.setCountry("Japan");
+        japan.setYear(2001);
+        japan.setPopulation(1_000_000);
+
+        People america = new People();
+        america.setCountry("America");
+        america.setYear(2001);
+        america.setPopulation(2_000_000);
+
+        return Arrays.asList(japan, america);
     }
 
     @ResponseBody

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
@@ -15,8 +16,10 @@ import com.example.contoroller.PeopleController.People;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -29,8 +32,9 @@ public class PeopleControllerTest {
 
     @Test
     public void getPeopleTest() {
-        String url = "http://localhost:" + port + "/api/people";
-        People people = testRestTemplate.getForObject(url, People.class);
+        String url = "http://localhost:" + port + "/api/people/{country}";
+        String country = "japan";
+        People people = testRestTemplate.getForObject(url, People.class, country);
 
         People expected = new People();
         expected.setCountry("Japan");
@@ -38,6 +42,26 @@ public class PeopleControllerTest {
         expected.setPopulation(1_000_000);
 
         assertThat(people).isEqualTo(expected);
+    }
+
+    @Test
+    public void getPeopleListTest() {
+        String url = "http://localhost:" + port + "/api/people";
+        ParameterizedTypeReference<List<People>> paramType = new ParameterizedTypeReference<List<People>>() {};
+        ResponseEntity<List<People>> peopleList = testRestTemplate
+                .exchange(url, HttpMethod.GET, null, paramType);
+
+        People japan = new People();
+        japan.setCountry("Japan");
+        japan.setYear(2001);
+        japan.setPopulation(1_000_000);
+
+        People america = new People();
+        america.setCountry("America");
+        america.setYear(2001);
+        america.setPopulation(2_000_000);
+
+        assertThat(peopleList.getBody()).containsOnly(japan, america);
     }
 
     @Test
