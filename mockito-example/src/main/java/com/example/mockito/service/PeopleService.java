@@ -22,8 +22,8 @@ public class PeopleService {
 
     static private final String HOST = "http://dummy-host.com:8080";
 
-    public People getPeople() {
-        String url = HOST + "/api/people";
+    public People getPeople(String country) {
+        String url = HOST + "/api/people/" + country;
         return restTemplate.getForObject(url, People.class);
     }
 

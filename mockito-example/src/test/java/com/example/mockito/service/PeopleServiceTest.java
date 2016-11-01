@@ -28,28 +28,30 @@ public class PeopleServiceTest {
 
     @Test
     public void getPeopleTest() {
+        String country = "japan";
+
         People expected = new People();
         expected.setCountry("japan");
         expected.setYear(2001);
         expected.setPopulation(1_000_000);
 
-        when(mockService.getPeople()).thenReturn(expected);
+        when(mockService.getPeople(country)).thenReturn(expected);
 
         // assert
-        assertThat(mockService.getPeople().getCountry()).isEqualTo("japan");
-        assertThat(mockService.getPeople().getYear()).isEqualTo(2001);
-        assertThat(mockService.getPeople().getPopulation()).isEqualTo(1_000_000);
+        assertThat(mockService.getPeople(country).getCountry()).isEqualTo("japan");
+        assertThat(mockService.getPeople(country).getYear()).isEqualTo(2001);
+        assertThat(mockService.getPeople(country).getPopulation()).isEqualTo(1_000_000);
 
         // verify
-        verify(mockService, times(3)).getPeople();
+        verify(mockService, times(3)).getPeople(country);
         verify(mockService, never()).postPeople(new People());
 
         // 前置記法
         reset(mockService);
-        doReturn(expected).when(mockService).getPeople();
-        assertThat(mockService.getPeople().getCountry()).isEqualTo("japan");
-        assertThat(mockService.getPeople().getYear()).isEqualTo(2001);
-        assertThat(mockService.getPeople().getPopulation()).isEqualTo(1_000_000);
+        doReturn(expected).when(mockService).getPeople(country);
+        assertThat(mockService.getPeople(country).getCountry()).isEqualTo("japan");
+        assertThat(mockService.getPeople(country).getYear()).isEqualTo(2001);
+        assertThat(mockService.getPeople(country).getPopulation()).isEqualTo(1_000_000);
     }
 
     @Test
