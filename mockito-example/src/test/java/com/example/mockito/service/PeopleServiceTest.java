@@ -3,7 +3,8 @@ package com.example.mockito.service;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -16,15 +17,18 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 @RunWith(MockitoJUnitRunner.class)
 public class PeopleServiceTest {
-    @InjectMocks
-    PeopleService peopleService;
+    @Mock
+    PeopleService mockService;
 
+    // @Mock or mock()
+    /*
     private PeopleService mockService;
 
     @Before
     public void before() {
-        mockService = mock(PeopleService.class);
+       mockService = mock(PeopleService.class);
     }
+    */
 
     @Test
     public void getPeopleTest() {
