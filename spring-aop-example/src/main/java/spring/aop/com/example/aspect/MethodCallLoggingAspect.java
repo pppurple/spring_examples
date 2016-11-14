@@ -10,6 +10,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -18,52 +19,43 @@ import java.util.Objects;
 public class MethodCallLoggingAspect {
     @Before("execution(* *..*Service.*(..))")
     public void beforeLog(JoinPoint jp) {
-        System.out.println("====================================");
-        System.out.println("Advice before log");
-        System.out.println("args:" + Arrays.toString(jp.getArgs()));
-        System.out.println("signature:" + jp.getSignature());
-        System.out.println("kind:" + jp.getKind());
+        System.out.println("[Before]====================================");
+        System.out.println("[Before]args:" + Arrays.toString(jp.getArgs()));
+        System.out.println("[Before]signature:" + jp.getSignature());
     }
 
-    @AfterReturning("execution(* *..*Service.*(..))")
-    public void afterReturningLog(JoinPoint jp) {
-        System.out.println("====================================");
-        System.out.println("Advice after returning log");
-        System.out.println("args:" + Arrays.toString(jp.getArgs()));
-        System.out.println("signature:" + jp.getSignature());
-        System.out.println("kind:" + jp.getKind());
+    @AfterReturning(value = "execution(* *..*Service.*(..))", returning = "randomValue")
+    public void afterReturningLog(JoinPoint jp, int randomValue) {
+        System.out.println("[AfterReturn]====================================");
+        System.out.println("[AfterReturn]args:" + Arrays.toString(jp.getArgs()));
+        System.out.println("[AfterReturn]signature:" + jp.getSignature());
+        System.out.println("[AfterReturn]return:" + randomValue);
     }
 
-    @AfterThrowing(value = "execution(* *..*Service.*(..))", throwing = "e")
-    public void afterThrowingLog(JoinPoint jp, Exception e) {
-        System.out.println("====================================");
-        System.out.println("Advice after throwing log");
-        System.out.println("args:" + Arrays.toString(jp.getArgs()));
-        System.out.println("signature:" + jp.getSignature());
-        System.out.println("kind:" + jp.getKind());
-        e.printStackTrace();
+    @AfterThrowing(value = "execution(* *..*Service.getLength*(..))", throwing = "e")
+    public void afterThrowingLog(JoinPoint jp, NullPointerException e) {
+        System.out.println("[AfterThrowing]====================================");
+        System.out.println("[AfterThrowing]args:" + Arrays.toString(jp.getArgs()));
+        System.out.println("[AfterThrowing]signature:" + jp.getSignature());
     }
 
     @After("execution(* *..*Service.*(..))")
     public void afterLog(JoinPoint jp) {
-        System.out.println("====================================");
-        System.out.println("Advice after log");
-        System.out.println("args:" + Arrays.toString(jp.getArgs()));
-        System.out.println("signature:" + jp.getSignature());
-        System.out.println("kind:" + jp.getKind());
+        System.out.println("[After]====================================");
+        System.out.println("[After]args:" + Arrays.toString(jp.getArgs()));
+        System.out.println("[After]signature:" + jp.getSignature());
     }
 
-    @Around("execution(* *..*Service.*(..))")
+    @Around("execution(* *..*Service.getRandomValue*(..))")
     public Object aroundLog(ProceedingJoinPoint jp) {
-        System.out.println("====================================");
-        System.out.println("Advice around log");
+        System.out.println("[Around]====================================");
         Object result = null;
         try {
+            // 対象メソッド実行
             result = jp.proceed();
-            System.out.println("args:" + Arrays.toString(jp.getArgs()));
-            System.out.println("signature:" + jp.getSignature());
-            System.out.println("return:" + result);
-            System.out.println("kind:" + jp.getKind());
+            System.out.println("[Around]args:" + Arrays.toString(jp.getArgs()));
+            System.out.println("[Around]signature:" + jp.getSignature());
+            System.out.println("[Around]return:" + result);
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }
