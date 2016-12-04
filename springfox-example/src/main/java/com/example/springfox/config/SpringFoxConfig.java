@@ -24,7 +24,8 @@ public class SpringFoxConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                     .apis(RequestHandlerSelectors.any())
-                    .paths(PathSelectors.any())
+//                    .paths(PathSelectors.any())
+                    .paths(paths())
                     .build()
                 .pathMapping("/")
                 .apiInfo(apiInfo());
@@ -39,12 +40,15 @@ public class SpringFoxConfig {
     }
 
     private ApiInfo apiInfo() {
-        return new ApiInfoBuilder().title("My SpringFox Example Api").version("1.0").build();
+        return new ApiInfoBuilder()
+                .title("My SpringFox Example Api")
+                .version("1.0")
+                .build();
     }
 
     private Predicate<String> paths() {
         return or(
-                regex("")
+                regex("/api/people.*")
         );
     }
 }
