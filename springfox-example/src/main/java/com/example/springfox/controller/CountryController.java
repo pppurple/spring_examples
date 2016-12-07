@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-@Controller
+//@Controller
 public class CountryController {
     @ResponseBody
     @RequestMapping(value = "/api/country/now", method = RequestMethod.GET)

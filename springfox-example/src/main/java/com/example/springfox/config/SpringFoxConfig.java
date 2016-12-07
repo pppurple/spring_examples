@@ -25,12 +25,12 @@ import com.example.springfox.controller.CountryController.MyResponseEntityWithSt
 import com.example.springfox.controller.CountryController.Country;
 
 @Configuration
-@EnableSwagger2
+//@EnableSwagger2
 public class SpringFoxConfig {
     @Autowired
     private TypeResolver typeResolver;
 
-    @Bean
+//    @Bean
     public Docket springFoxExampleDoc() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
@@ -50,7 +50,7 @@ public class SpringFoxConfig {
                 .apiInfo(apiInfo());
     }
 
-    @Bean
+//    @Bean
     UiConfiguration uiConfiguration() {
         return new UiConfiguration(
                 "",
