@@ -9,15 +9,15 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
-@EnableSwagger2
+//@EnableSwagger2
 public class SpringFoxConfigPathMapping {
-    @Bean
+//    @Bean
     public Docket springFoxExampleDoc() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                     .apis(RequestHandlerSelectors.any())
                     .paths(PathSelectors.any())
-                .build()
+                    .build()
                 .pathMapping("/prefix_path");
     }
 }

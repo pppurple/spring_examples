@@ -8,19 +8,20 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import static com.google.common.base.Predicates.not;
 import static com.google.common.base.Predicates.or;
 import static springfox.documentation.builders.PathSelectors.regex;
 
 @Configuration
-@EnableSwagger2
+//@EnableSwagger2
 public class SpringFoxConfigPaths {
-    @Bean
+//    @Bean
     public Docket springFoxExampleDoc() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                     .apis(RequestHandlerSelectors.any())
                     .paths(paths())
-                .build();
+                    .build();
     }
 
     private Predicate<String> paths() {
@@ -28,5 +29,8 @@ public class SpringFoxConfigPaths {
                 regex("/api/people.*"),
                 regex("/api/country.*")
         );
+/*        return not(
+                regex("/error")
+        );*/
     }
 }
