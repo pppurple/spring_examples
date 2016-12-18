@@ -10,7 +10,6 @@ import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger.web.UiConfiguration;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.Date;
@@ -25,12 +24,12 @@ import com.example.springfox.controller.CountryController.MyResponseEntityWithSt
 import com.example.springfox.controller.CountryController.Country;
 
 @Configuration
-//@EnableSwagger2
+@EnableSwagger2
 public class SpringFoxConfig {
     @Autowired
     private TypeResolver typeResolver;
 
-//    @Bean
+    @Bean
     public Docket springFoxExampleDoc() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
@@ -45,17 +44,7 @@ public class SpringFoxConfig {
                                     typeResolver.resolve(List.class, Country.class)),
                                 typeResolver.resolve(Country.class))
                 )
-                .useDefaultResponseMessages(false)
-                .enableUrlTemplating(true)
                 .apiInfo(apiInfo());
-    }
-
-//    @Bean
-    UiConfiguration uiConfiguration() {
-        return new UiConfiguration(
-                "",
-                UiConfiguration.Constants.DEFAULT_SUBMIT_METHODS
-        );
     }
 
     private ApiInfo apiInfo() {

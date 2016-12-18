@@ -36,5 +36,4 @@ public class SpringFoxConfigAlternateTypeRules {
                                 typeResolver.resolve(Country.class))
                 );
     }
-
 }

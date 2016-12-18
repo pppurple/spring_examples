@@ -25,9 +25,9 @@ public class CountryController {
     @ResponseBody
     @RequestMapping(value = "/api/country/{countryName}/{cityName}", method = RequestMethod.GET)
     public MyResponseEntityWithStatus<City> getCity(@PathVariable String country, @PathVariable String city) {
-        City awa = new City("awa", 100);
+        City yokohama = new City("yokohama", 100);
         HttpStatus status = HttpStatus.OK;
-        return new MyResponseEntityWithStatus<>(awa, status);
+        return new MyResponseEntityWithStatus<>(yokohama, status);
     }
 
     @ResponseBody
@@ -39,7 +39,7 @@ public class CountryController {
         return new MyResponseEntity<>(countries);
     }
 
-    @ApiIgnore
+    @ApiIgnore(value = "this is dummy")
     @ResponseBody
     @RequestMapping(value = "/api/country/dummy", method = RequestMethod.GET)
     public String dummy() {

@@ -11,9 +11,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import java.util.Date;
 
 @Configuration
-@EnableSwagger2
+//@EnableSwagger2
 public class SpringFoxConfigDirectModelSubstitute {
-    @Bean
+//    @Bean
     public Docket springFoxExampleDoc() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
