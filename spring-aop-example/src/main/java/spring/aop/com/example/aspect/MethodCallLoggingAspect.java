@@ -30,7 +30,7 @@ public class MethodCallLoggingAspect {
         System.out.println("[AfterReturn]return:" + randomValue);
     }
 
-    @AfterThrowing(value = "execution(* *..*Service.getLength*(..))", throwing = "e")
+    @AfterThrowing(value = "execution(* *..*Service.*(..))", throwing = "e")
     public void afterThrowingLog(JoinPoint jp, NullPointerException e) {
         System.out.println("[AfterThrowing]====================================");
         System.out.println("[AfterThrowing]args:" + Arrays.toString(jp.getArgs()));
