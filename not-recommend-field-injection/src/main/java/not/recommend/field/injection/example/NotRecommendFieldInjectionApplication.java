@@ -22,10 +22,10 @@ public class NotRecommendFieldInjectionApplication implements CommandLineRunner 
 
 	@Override
 	public void run(String... strings) throws Exception {
-		System.out.println("[ConstructorInjection] " + constructorInjection.toString());
-		System.out.println("[FieldInjection] " + fieldInjection.toString());
-		System.out.println("[SetterInjection] " + setterInjection.toString());
-		System.out.println("[ConstructorInjectionWithLombok] " + constructorInjectionWithLombok.toString());
+		System.out.println("[ConstructorInjection] " + constructorInjection.getText());
+		System.out.println("[FieldInjection] " + fieldInjection.getText());
+		System.out.println("[SetterInjection] " + setterInjection.getText());
+		System.out.println("[ConstructorInjectionWithLombok] " + constructorInjectionWithLombok.getText());
 	}
 
 	@Autowired

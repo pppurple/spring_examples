@@ -11,4 +11,8 @@ public class FieldInjection {
     private MyServiceA myServiceA;
     @Autowired
     private MyServiceB myServiceB;
+
+    public String getText() {
+        return myServiceA.getText() + ":" + myServiceB.getText();
+    }
 }

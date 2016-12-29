@@ -19,4 +19,8 @@ public class SetterInjection {
     public void setMyServiceB(MyServiceB myServiceB) {
         this.myServiceB = myServiceB;
     }
+
+    public String getText() {
+        return myServiceA.getText() + ":" + myServiceB.getText();
+    }
 }
