@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ConstructorInjection {
-    private MyServiceA myServiceA;
-    private MyServiceB myServiceB;
+    private final MyServiceA myServiceA;
+    private final MyServiceB myServiceB;
 
     @Autowired
     public ConstructorInjection(MyServiceA myServiceA, MyServiceB myServiceB) {
