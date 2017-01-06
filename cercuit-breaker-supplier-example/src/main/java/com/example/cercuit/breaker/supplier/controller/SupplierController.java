@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class SupplierController {
     @RequestMapping(value = "supplier/text", method = RequestMethod.GET)
     public String replyTest() {
-        return "Supplier reply text";
+        return "Reply supplier text";
     }
 }
