@@ -18,7 +18,7 @@ public class CercuitBreakerExampleApplicationTests {
     @Test
     public void withThreshold() throws InterruptedException {
         restTemplate = new TestRestTemplate();
-        URI uri = URI.create("http://localhost:8080/myapp_with_config");
+        URI uri = URI.create("http://localhost:8080/myapp_with_threshold");
 
         for(int i = 0; i < 7; i++) {
             Thread.sleep(1000);
@@ -32,8 +32,8 @@ public class CercuitBreakerExampleApplicationTests {
         restTemplate = new TestRestTemplate();
         URI uri = URI.create("http://localhost:8080/myapp_with_sleep_window");
 
-        for(int i = 0; i < 11; i++) {
-            Thread.sleep(1000);
+        for(int i = 0; i < 300; i++) {
+            Thread.sleep(500);
             restTemplate.getForObject(uri, String.class);
         }
     }
@@ -43,8 +43,8 @@ public class CercuitBreakerExampleApplicationTests {
         restTemplate = new TestRestTemplate();
         URI uri = URI.create("http://localhost:8080/myapp_with_percentage");
 
-        for(int i = 0; i < 10; i++) {
-            Thread.sleep(2000);
+        for(int i = 0; i < 10000000; i++) {
+            Thread.sleep(100);
             String text = restTemplate.getForObject(uri, String.class);
             System.out.println(i + " : " + text);
         }

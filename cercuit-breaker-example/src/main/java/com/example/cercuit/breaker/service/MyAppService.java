@@ -20,7 +20,6 @@ public class MyAppService {
     @HystrixCommand(fallbackMethod = "fallbackText")
     public String getSupplierText() {
         URI uri = URI.create("http://localhost:8888/supplier/text");
-
         return restTemplate.getForObject(uri, String.class);
     }
 
@@ -56,10 +55,10 @@ public class MyAppService {
     @HystrixCommand(
             fallbackMethod = "fallbackText",
             commandProperties = {
+                    @HystrixProperty(name = "execution.timeout.enabled", value = "true"),
+                    @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "50"),
                     @HystrixProperty(name = "circuitBreaker.enabled", value = "true"),
-                    @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "50"),
-                    @HystrixProperty(name = "metrics.rollingStats.timeInMilliseconds", value = "10000"),
-                    @HystrixProperty(name = "metrics.rollingStats.numBuckets", value = "1")
+                    @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "50")
             }
     )
     public String getSupplierTextWithPercentage() {
