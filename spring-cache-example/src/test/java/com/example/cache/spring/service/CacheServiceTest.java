@@ -1,7 +1,5 @@
 package com.example.cache.spring.service;
 
-import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +16,6 @@ public class CacheServiceTest {
     @Autowired
     private CacheService cacheService;
 
-    @Before
-    public void before() {
-    }
-
     @Test
     public void myCacheTest() throws Exception {
         // 1回目キャッシュなし
@@ -32,22 +26,20 @@ public class CacheServiceTest {
         time(() -> cacheService.getString());
     }
 
-    @Ignore
     @Test
     public void anotherCacheTest() throws Exception {
-        // 1回目キャッシュなし
+        // getString 1回目キャッシュなし
         time(() -> cacheService.getString());
         Thread.sleep(3_000);
 
-        // 2回目キャッシュヒット
+        // getString 2回目キャッシュヒット
         time(() -> cacheService.getString());
         Thread.sleep(3_000);
 
-        // anotherCache 1回目
+        // AnotherString 1回目キャッシュヒット
         time(() -> cacheService.getAnotherString());
     }
 
-    @Ignore
     @Test
     public void cacheWithArgTest() throws Exception {
         // 1回目キャッシュなし
@@ -62,7 +54,6 @@ public class CacheServiceTest {
         time(() -> cacheService.getStringWithArg("aaa"));
     }
 
-    @Ignore
     @Test
     public void cacheWithArgsTest() throws Exception {
         // キャッシュなし
@@ -81,7 +72,6 @@ public class CacheServiceTest {
         time(() -> cacheService.getStringWithArgs("aaa", 111, true));
     }
 
-    @Ignore
     @Test
     public void cacheWithArgsAndKeyTest() throws Exception {
         // キャッシュなし
@@ -96,7 +86,6 @@ public class CacheServiceTest {
         time(() -> cacheService.getStringWithArgsAndKey("aaa", 222, false));
     }
 
-    @Ignore
     @Test
     public void putTest() throws Exception {
         // キャッシュなし
@@ -111,7 +100,6 @@ public class CacheServiceTest {
         time(() -> cacheService.getStringWithArg("aaa"));
     }
 
-    @Ignore
     @Test
     public void evictTest() throws Exception {
         // キャッシュなし
@@ -129,7 +117,6 @@ public class CacheServiceTest {
         time(() -> cacheService.getStringWithArg("bbb"));
     }
 
-    @Ignore
     @Test
     public void evictAllTest() throws Exception {
         // キャッシュなし
@@ -146,7 +133,6 @@ public class CacheServiceTest {
         time(() -> cacheService.getStringWithArg("bbb"));
     }
 
-    @Ignore
     @Test
     public void cachingTest() throws Exception {
         // キャッシュなし

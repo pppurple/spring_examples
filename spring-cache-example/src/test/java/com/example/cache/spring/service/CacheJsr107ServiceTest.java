@@ -1,5 +1,6 @@
 package com.example.cache.spring.service;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,9 @@ public class CacheJsr107ServiceTest {
     @Autowired
     private CacheJsr107Service cacheJsr107Service;
 
+    @Ignore
     @Test
-    public void get() throws Exception {
+    public void getTest() throws Exception {
         // 1回目キャッシュなし
         time(() -> cacheJsr107Service.get("aaa"));
         Thread.sleep(3_000);
@@ -26,8 +28,9 @@ public class CacheJsr107ServiceTest {
         time(() -> cacheJsr107Service.get("aaa"));
     }
 
+    @Ignore
     @Test
-    public void put() throws Exception {
+    public void putTest() throws Exception {
         // キャッシュなし
         time(() -> cacheJsr107Service.get("aaa"));
         Thread.sleep(3_000);
@@ -40,8 +43,9 @@ public class CacheJsr107ServiceTest {
         time(() -> cacheJsr107Service.get("aaa"));
     }
 
+    @Ignore
     @Test
-    public void remove() throws Exception {
+    public void removeTest() throws Exception {
         // キャッシュなし
         time(() -> cacheJsr107Service.get("aaa"));
         time(() -> cacheJsr107Service.get("bbb"));
@@ -58,7 +62,7 @@ public class CacheJsr107ServiceTest {
     }
 
     @Test
-    public void removeAll() throws Exception {
+    public void removeAllTest() throws Exception {
         // キャッシュなし
         time(() -> cacheJsr107Service.get("aaa"));
         time(() -> cacheJsr107Service.get("bbb"));
