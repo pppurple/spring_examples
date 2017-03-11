@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>my test</title>
+</head>
+<body>
+    <h2>Thymeleaf3 Test</h2>
+    <h4>date helper</h4>
+    <p>[[${#dateHelper.now()}]]</p>
+    <h4>string helper</h4>
+    <p>[[${#strHelper.addFoo('abc')}]]</p>
+    <p>[[${#strHelper.addBar('abc')}]]</p>
+</body>
+</html>
