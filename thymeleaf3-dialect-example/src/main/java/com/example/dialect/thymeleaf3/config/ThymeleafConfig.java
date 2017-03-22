@@ -2,7 +2,6 @@ package com.example.dialect.thymeleaf3.config;
 
 import com.example.dialect.thymeleaf3.view.MyExpressionObjectDialect;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
@@ -21,10 +20,13 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 @EnableWebMvc
 public class ThymeleafConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware {
 
-    @Autowired
     private MyExpressionObjectDialect myExpressionObjectDialect;
 
     private ApplicationContext applicationContext;
+
+    public ThymeleafConfig(MyExpressionObjectDialect myExpressionObjectDialect) {
+        this.myExpressionObjectDialect = myExpressionObjectDialect;
+    }
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {

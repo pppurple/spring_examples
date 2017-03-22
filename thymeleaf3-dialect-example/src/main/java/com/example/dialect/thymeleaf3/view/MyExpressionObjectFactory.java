@@ -2,7 +2,6 @@ package com.example.dialect.thymeleaf3.view;
 
 import com.example.dialect.thymeleaf3.view.helper.DateHelper;
 import com.example.dialect.thymeleaf3.view.helper.StringHelper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.context.IExpressionContext;
 import org.thymeleaf.expression.IExpressionObjectFactory;
@@ -15,12 +14,15 @@ public class MyExpressionObjectFactory implements IExpressionObjectFactory {
     private static final String dateExpression = "dateHelper";
     private static final String stringExpression = "strHelper";
 
-    @Autowired
     private DateHelper dateHelper;
-    @Autowired
     private StringHelper strHelper;
 
-    private static final Set<String> set = new HashSet<String>() {
+    public MyExpressionObjectFactory(DateHelper dateHelper, StringHelper strHelper) {
+        this.dateHelper = dateHelper;
+        this.strHelper = strHelper;
+    }
+
+    private static final Set<String> expressionSet = new HashSet<String>() {
         {
             add(dateExpression);
             add(stringExpression);
@@ -29,7 +31,7 @@ public class MyExpressionObjectFactory implements IExpressionObjectFactory {
 
     @Override
     public Set<String> getAllExpressionObjectNames() {
-        return set;
+        return expressionSet;
     }
 
     @Override
