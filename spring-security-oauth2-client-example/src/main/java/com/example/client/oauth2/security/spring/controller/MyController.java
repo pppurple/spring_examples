@@ -8,38 +8,48 @@ import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
-@Controller
+@RestController
 public class MyController {
     @Autowired
     OAuth2RestTemplate oAuth2RestTemplate;
 
-    @RequestMapping("/my")
-    @ResponseBody
-    public String top() {
+    @RequestMapping("/github")
+    public Repo[] github() {
         OAuth2AccessToken accessToken = oAuth2RestTemplate.getAccessToken();
+        ResponseEntity<Repo[]> responseEntity = oAuth2RestTemplate
+                .getForEntity("https://api.github.com/user/repos?access_token=" + accessToken, Repo[].class);
 
-        RestTemplate restTemplate = new RestTemplate();
-//        My forObject = restTemplate.getForObject("https://api.github.com/user?access_token=" + accessToken, My.class);
-        ResponseEntity<Repo[]> responseEntity = restTemplate.getForEntity("https://api.github.com/user/repos?access_token=" + accessToken, Repo[].class);
-        Repo[] repos = responseEntity.getBody();
-
-
-
-        //return forObject.getLogin() + ":" + forObject.getId();
+        return responseEntity.getBody();
     }
 
-    @Data
-    public static class My {
-        String login;
-        String id;
+    @RequestMapping("/twitter")
+    public Twit[] twitter() {
+
+        return null;
+    }
+
+    @RequestMapping("/sales")
+    public String sale() {
+        OAuth2AccessToken accessToken = oAuth2RestTemplate.getAccessToken();
+
+        return accessToken.getValue();
     }
 
     @Data
     public static class Repo {
         String name;
+        String description;
+    }
+
+    @Data
+    public static class Twit {
+
     }
 }

@@ -8,9 +8,16 @@ import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
 import org.springframework.security.oauth2.client.token.grant.client.ClientCredentialsResourceDetails;
+import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
+import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordResourceDetails;
+import org.springframework.security.oauth2.common.AuthenticationScheme;
+import org.springframework.stereotype.Controller;
+
+import java.util.List;
 
 @Configuration
 public class SpringSecurityOauth2Config {
+    // for twitter
 /*    @Bean
     @ConfigurationProperties("security.oauth2.client")
     @Primary
@@ -18,9 +25,25 @@ public class SpringSecurityOauth2Config {
         return new ClientCredentialsResourceDetails();
     }*/
 
-    @Bean
+    // for salesforce
+/*    @Bean
+    @ConfigurationProperties("security.oauth2.client")
+    @Primary
+    public ResourceOwnerPasswordResourceDetails resourceOwnerPasswordResourceDetails() {
+        return new ResourceOwnerPasswordResourceDetails();
+    }*/
+
+    // for salesforce
+/*    @Bean
     public OAuth2RestTemplate oauth2RestTemplate(OAuth2ClientContext oauth2ClientContext,
-                                                 OAuth2ProtectedResourceDetails details) {
+                                                 ResourceOwnerPasswordResourceDetails details) {
+        return new OAuth2RestTemplate(details, oauth2ClientContext);
+    }*/
+
+    // for GitHub
+    @Bean
+    public OAuth2RestTemplate oauth2RestTemplateGithub(OAuth2ClientContext oauth2ClientContext,
+                                                       OAuth2ProtectedResourceDetails details) {
         return new OAuth2RestTemplate(details, oauth2ClientContext);
     }
 }
