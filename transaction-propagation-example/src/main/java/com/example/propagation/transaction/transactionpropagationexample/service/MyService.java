@@ -10,11 +10,11 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class MyServiceA {
+public class MyService {
     private final JdbcTemplate jdbc;
     private final DataSourceTransactionManager transactionManager;
 
-    public MyServiceA(JdbcTemplate jdbc, DataSourceTransactionManager transactionManager) {
+    public MyService(JdbcTemplate jdbc, DataSourceTransactionManager transactionManager) {
         this.jdbc = jdbc;
         this.transactionManager = transactionManager;
     }
