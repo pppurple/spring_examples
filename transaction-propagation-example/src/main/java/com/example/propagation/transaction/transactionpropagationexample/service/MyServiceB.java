@@ -18,49 +18,49 @@ public class MyServiceB {
     // default
     @Transactional(propagation = Propagation.REQUIRED)
     public void required() {
-        jdbc.update("UPDATE person SET age=? WHERE name = 'Andy'", 20);
+        jdbc.update("UPDATE person SET age=? WHERE name = 'Bobby'", 20);
         myServiceA.required();
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
 //    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void requiresNew() {
-        jdbc.update("UPDATE person SET age=? WHERE name = 'Andy'", 20);
+        jdbc.update("UPDATE person SET age=? WHERE name = 'Bobby'", 20);
         myServiceA.requiresNew();
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
 //    @Transactional(propagation = Propagation.SUPPORTS)
     public void supports() {
-        jdbc.update("UPDATE person SET age=? WHERE name = 'Andy'", 20);
+        jdbc.update("UPDATE person SET age=? WHERE name = 'Bobby'", 20);
         myServiceA.supports();
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
 //    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void notSupported() {
-        jdbc.update("UPDATE person SET age=? WHERE name = 'Andy'", 20);
+        jdbc.update("UPDATE person SET age=? WHERE name = 'Bobby'", 20);
         myServiceA.notSupported();
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
 //    @Transactional
     public void mandatory() {
-        jdbc.update("UPDATE person SET age=? WHERE name = 'Andy'", 20);
+        jdbc.update("UPDATE person SET age=? WHERE name = 'Bobby'", 20);
         myServiceA.mandatory();
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
 //    @Transactional(propagation = Propagation.NESTED)
     public void nested() {
-        jdbc.update("UPDATE person SET age=? WHERE name = 'Andy'", 20);
+        jdbc.update("UPDATE person SET age=? WHERE name = 'Bobby'", 20);
         myServiceA.nested();
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
 //    @Transactional(propagation = Propagation.NEVER)
     public void never() {
-        jdbc.update("UPDATE person SET age=? WHERE name = 'Andy'", 20);
+        jdbc.update("UPDATE person SET age=? WHERE name = 'Bobby'", 20);
         myServiceA.never();
     }
 
@@ -68,6 +68,6 @@ public class MyServiceB {
         jdbc.execute("DROP TABLE IF EXISTS person");
         jdbc.execute("CREATE TABLE person (id INTEGER NOT NULL IDENTITY, name VARCHAR(256), age INTEGER)"
         );
-        jdbc.update("INSERT INTO person (name, age) VALUES (?, ?)", "Andy", 19);
+        jdbc.update("INSERT INTO person (name, age) VALUES (?, ?)", "Bobby", 19);
     }
 }

@@ -48,7 +48,7 @@ public class MyController {
         myServiceA.supports();
     }
 
-    @RequestMapping("/supports_form_b")
+    @RequestMapping("/supports_nested")
     public void supportsNested() {
         myServiceB.initDB();
         myServiceB.supports();
