@@ -1,6 +1,5 @@
 package com.example.propagation.transaction.transactionpropagationexample.controller;
 
-import com.example.propagation.transaction.transactionpropagationexample.service.MyService;
 import com.example.propagation.transaction.transactionpropagationexample.service.MyServiceA;
 import com.example.propagation.transaction.transactionpropagationexample.service.MyServiceB;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,10 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class MyController {
     private final MyServiceA myServiceA;
     private final MyServiceB myServiceB;
-    private final MyService myService;
 
-    public MyController(MyService myService, MyServiceA myServiceA, MyServiceB myServiceB) {
-        this.myService = myService;
+    public MyController(MyServiceA myServiceA, MyServiceB myServiceB) {
         this.myServiceA = myServiceA;
         this.myServiceB = myServiceB;
     }

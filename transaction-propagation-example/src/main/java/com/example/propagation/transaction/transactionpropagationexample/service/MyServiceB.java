@@ -23,42 +23,36 @@ public class MyServiceB {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-//    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void requiresNew() {
         jdbc.update("UPDATE person SET age=? WHERE name = 'Bobby'", 20);
         myServiceA.requiresNew();
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-//    @Transactional(propagation = Propagation.SUPPORTS)
     public void supports() {
         jdbc.update("UPDATE person SET age=? WHERE name = 'Bobby'", 20);
         myServiceA.supports();
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-//    @Transactional(propagation = Propagation.NOT_SUPPORTED)
     public void notSupported() {
         jdbc.update("UPDATE person SET age=? WHERE name = 'Bobby'", 20);
         myServiceA.notSupported();
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-//    @Transactional
     public void mandatory() {
         jdbc.update("UPDATE person SET age=? WHERE name = 'Bobby'", 20);
         myServiceA.mandatory();
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-//    @Transactional(propagation = Propagation.NESTED)
     public void nested() {
         jdbc.update("UPDATE person SET age=? WHERE name = 'Bobby'", 20);
         myServiceA.nested();
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-//    @Transactional(propagation = Propagation.NEVER)
     public void never() {
         jdbc.update("UPDATE person SET age=? WHERE name = 'Bobby'", 20);
         myServiceA.never();
