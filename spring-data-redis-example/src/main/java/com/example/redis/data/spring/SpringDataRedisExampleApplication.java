@@ -1,4 +1,4 @@
-package com.example.redis.data.spring.springdataredisexample;
+package com.example.redis.data.spring;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
