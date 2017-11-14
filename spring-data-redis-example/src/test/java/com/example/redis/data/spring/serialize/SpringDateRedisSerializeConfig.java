@@ -38,7 +38,7 @@ public class SpringDateRedisSerializeConfig {
         return redisTemplate;
     }
 
-    @Primary
+//    @Primary
     @Bean
     public JedisConnectionFactory jedisConnectionFactory() {
         return new JedisConnectionFactory();
