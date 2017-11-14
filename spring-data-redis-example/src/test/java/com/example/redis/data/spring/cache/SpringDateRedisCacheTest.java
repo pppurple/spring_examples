@@ -1,12 +1,11 @@
 package com.example.redis.data.spring.cache;
 
-import com.example.redis.data.spring.serialize.SpringDateRedisSerializeTest.User;
+import com.example.redis.data.spring.cache.PersonService.Person;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.*;
@@ -15,21 +14,45 @@ import static org.assertj.core.api.Assertions.*;
 @SpringBootTest(classes = SpringDataRedisCacheConfig.class)
 public class SpringDateRedisCacheTest {
     @Autowired
-    @Qualifier("redisTemplateJacksonSerialize")
-    private RedisTemplate<String, User> redisTemplateJacksonSerialize;
+    private PersonService personService;
+
+    @Before
+    public void before() {
+        personService.evict("Person:andy");
+        personService.evict("Person:bobby");
+    }
 
     @Test
-    public void jacksonSerialize() {
-        System.out.println(redisTemplateJacksonSerialize.getConnectionFactory());
-        System.out.println(redisTemplateJacksonSerialize.getKeySerializer().getClass().getName());
-        System.out.println(redisTemplateJacksonSerialize.getValueSerializer().getClass().getName());
+    public void cacheTest() throws InterruptedException {
+        // キャッシュなし
+        long start = System.currentTimeMillis();
+        Person andy = personService.createPerson("andy");
+        long end = System.currentTimeMillis();
+        System.out.println("no cache [" + (end - start) + "msec]");
 
-        User cindy = new User("cindy", 44);
-        redisTemplateJacksonSerialize.delete("cindy");
-        redisTemplateJacksonSerialize.opsForValue().set("cindy", cindy);
+        // キャッシュヒット
+        long start2 = System.currentTimeMillis();
+        Person cachedAndy = personService.createPerson("andy");
+        long end2 = System.currentTimeMillis();
+        System.out.println("cache hit [" + (end2 - start2) + "msec]");
 
-        User deserializedCindy = redisTemplateJacksonSerialize.opsForValue().get("cindy");
+        assertThat(andy.getName()).isEqualTo(cachedAndy.getName());
+        assertThat(andy.getRandomValue()).isEqualTo(cachedAndy.getRandomValue());
+    /*
+    no cache [3168msec]
+    cache hit [34msec]
+     */
 
-        assertThat(deserializedCindy).isEqualTo(cindy);
+    /*
+        redis-cli
+        > get "Person:andy"
+        "{\"name\":\"andy\",\"randomValue\":-1896696146}"
+     */
     }
+
+    @Test
+    public void cacheWithExpireTest() throws InterruptedException {
+
+    }
+
 }
