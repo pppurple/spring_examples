@@ -12,19 +12,19 @@ import java.util.Random;
 @Service
 public class PersonService {
 
-    @Cacheable(cacheNames = "PersonCache", key = "'Person:' + #name")
+    @Cacheable(cacheNames = "personCache", key = "'Person:' + #name")
     public Person createPerson(String name) throws InterruptedException {
         Thread.sleep(3_000L);
         return new Person(name);
     }
 
-    @Cacheable(cacheManager = "ExpireManager", cacheNames = "ExpirePersonCache", key = "'ExpirePerson:' + #name")
+    @Cacheable(cacheManager = "expireManager", cacheNames = "expirePersonCache", key = "'ExpirePerson:' + #name")
     public Person createPersonWithExpire(String name) throws InterruptedException {
         Thread.sleep(3_000L);
         return new Person(name);
     }
 
-    @CacheEvict(cacheNames = {"PersonCache", "ExpirePersonCache"})
+    @CacheEvict(cacheNames = {"personCache", "expirePersonCache"})
     public void evict(String key) {
     }
 

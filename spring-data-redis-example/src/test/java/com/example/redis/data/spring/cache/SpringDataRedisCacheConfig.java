@@ -13,6 +13,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @EnableCaching
 @Configuration
 @ComponentScan("com.example.redis.data.spring.cache")
@@ -30,9 +33,14 @@ public class SpringDataRedisCacheConfig {
         return new RedisCacheManager(redisTemplate);
     }
 
-    @Bean(name = "expireManger")
+    @Bean(name = "expireManager")
     public RedisCacheManager cacheManagerWithExpire(RedisTemplate<String, Object> redisTemplate) {
-        return new RedisCacheManager(redisTemplate);
+        RedisCacheManager cacheManager = new RedisCacheManager(redisTemplate);
+        // set expire
+        Map<String, Long> expireMap = new HashMap<>();
+        expireMap.put("expirePersonCache", 10L);
+        cacheManager.setExpires(expireMap);
+        return cacheManager;
     }
 
     @Bean

@@ -19,7 +19,7 @@ public class SpringDateRedisCacheTest {
     @Before
     public void before() {
         personService.evict("Person:andy");
-        personService.evict("Person:bobby");
+        personService.evict("ExpirePerson:bobby");
     }
 
     @Test
@@ -52,7 +52,18 @@ public class SpringDateRedisCacheTest {
 
     @Test
     public void cacheWithExpireTest() throws InterruptedException {
+        long start = System.currentTimeMillis();
+        Person bobby = personService.createPersonWithExpire("bobby");
+        long end = System.currentTimeMillis();
+        System.out.println("no cache [" + (end - start) + "msec]");
 
+        /*
+        > get "ExpirePerson:bobby"
+        "{\"name\":\"bobby\",\"randomValue\":1551354967}"
+        しばらくして
+        > get "ExpirePerson:bobby"
+        (nil)
+         */
     }
 
 }
