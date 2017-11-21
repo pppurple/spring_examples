@@ -10,7 +10,6 @@ import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,38 +18,32 @@ import java.util.List;
 public class SpringDataRedisTransactionTest {
     @Autowired
     private StringRedisTemplate redisTemplate;
-    @Autowired
-    private MyService myService;
 
     @Before
     public void before() {
+        redisTemplate.delete("my_key");
         redisTemplate.delete("my_set");
         redisTemplate.delete("counter");
     }
 
     @Test
-    public void multiExecTest() {
-        redisTemplate.delete("my_set");
-        redisTemplate.delete("counter");
-
+    public void multiExecTest() throws InterruptedException {
         // transaction start
         redisTemplate.multi();
 
+        redisTemplate.opsForValue().set("my_key", "my_value");
         redisTemplate.opsForSet().add("my_set", "aaa");
         redisTemplate.opsForValue().increment("counter", 1L);
         redisTemplate.opsForValue().increment("counter", 1L);
+        Thread.sleep(10_000L);
         redisTemplate.opsForValue().increment("counter", 1L);
 
         List<Object> results = redisTemplate.exec();
-        System.out.println(results.size());
-        results.forEach(System.out::println);
-        /*
-        falseだと下記結果が返る
-        1
-        2
-         */
-
         // transaction end
+
+        System.out.println("-----------------");
+        results.forEach(System.out::println);
+        System.out.println("-----------------");
 
         System.out.println(redisTemplate.opsForSet().pop("my_set"));
         System.out.println(redisTemplate.opsForValue().get("counter"));
@@ -64,9 +57,6 @@ public class SpringDataRedisTransactionTest {
 
     @Test
     public void discardTest() {
-        redisTemplate.delete("my_set");
-        redisTemplate.delete("counter");
-
         // transaction start
         redisTemplate.multi();
 
@@ -91,8 +81,6 @@ public class SpringDataRedisTransactionTest {
     // https://www.javacodegeeks.com/2015/09/spring-data-and-redis.html#TransactionsRedis
     @Test
     public void useSessionCallbackTest() {
-        redisTemplate.delete("my_set");
-        redisTemplate.delete("counter");
         System.out.println(redisTemplate.getConnectionFactory().getConvertPipelineAndTxResults());
 
         //execute a transaction
@@ -117,16 +105,6 @@ public class SpringDataRedisTransactionTest {
             }
         });
         txResults.forEach(System.out::println);
-
-        System.out.println(redisTemplate.opsForSet().pop("my_set"));
-        System.out.println(redisTemplate.opsForValue().get("counter"));
-    }
-
-    @Test
-    @Transactional
-    public void transactionalTest() throws InterruptedException {
-
-        myService.addAndIncrement("my_set", "aaa", "counter");
 
         System.out.println(redisTemplate.opsForSet().pop("my_set"));
         System.out.println(redisTemplate.opsForValue().get("counter"));
