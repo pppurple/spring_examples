@@ -20,13 +20,6 @@ import java.util.Map;
 @Configuration
 @ComponentScan("com.example.redis.data.spring.cache")
 public class SpringDataRedisCacheConfig {
-    /*
-    @Bean
-    public PersonService personService() {
-        return new PersonService();
-    }
-    */
-
     @Primary
     @Bean
     public RedisCacheManager cacheManager(RedisTemplate<String, Object> redisTemplate) {

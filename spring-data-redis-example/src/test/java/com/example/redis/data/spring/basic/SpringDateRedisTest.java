@@ -115,11 +115,12 @@ public class SpringDateRedisTest {
         ops.rightPush("my_list", "bbb");
         ops.rightPush("my_list", "ccc");
         ops.rightPush("my_list", "ddd");
+        System.out.println(ops.range("my_list", 0, -1));
 
         // rightPushAll()
         // rightPushAll()で複数の値を一度にrightPush可能
         redisTemplate.delete("my_list");
-        ops.rightPushAll("aaa", "bbb", "ccc", "ddd");
+        ops.rightPushAll("my_list", "aaa", "bbb", "ccc", "ddd");
         System.out.println(ops.range("my_list", 0, -1));
 
         // 要素のコレクションを指定することでも一度にrightPush可能
@@ -148,6 +149,7 @@ public class SpringDateRedisTest {
         // leftPop(), rightPop()
         // leftPop()でリストの最初の要素を削除して取得。
         // rightPop()でリストの末尾の要素を削除して取得。
+        System.out.println(ops.range("my_list", 0, -1));
         System.out.println(ops.leftPop("my_list"));
         System.out.println(ops.range("my_list", 0, -1));
         System.out.println(ops.rightPop("my_list"));
@@ -157,7 +159,7 @@ public class SpringDateRedisTest {
         // 指定した範囲を残すようにリストをトリムする。
         // 第2引数は開始するインデックス、第3引数は終了するインデックス。
         redisTemplate.delete("my_list");
-        ops.rightPushAll("aaa", "bbb", "ccc", "ddd");
+        ops.rightPushAll("my_list", "aaa", "bbb", "ccc", "ddd");
         System.out.println(ops.range("my_list", 0, -1));
         ops.trim("my_list", 0, 1);
         System.out.println(ops.range("my_list", 0, -1));
@@ -185,7 +187,7 @@ public class SpringDateRedisTest {
 
         // pop()
         // pop()でランダムに要素を削除して取得。
-        ops.pop("my_set");
+        System.out.println(ops.pop("my_set"));
         System.out.println(ops.members("my_set"));
 
         // isMember()
@@ -201,6 +203,7 @@ public class SpringDateRedisTest {
         // 指定した要素を削除.
         redisTemplate.delete("my_set");
         ops.add("my_set", "AAA", "BBB", "CCC");
+        System.out.println(ops.members("my_set"));
         ops.remove("my_set", "BBB");
         System.out.println(ops.members("my_set"));
     }
@@ -268,6 +271,8 @@ public class SpringDateRedisTest {
         ops.add("my_zset", "member1", 111);
         ops.add("my_zset", "member2", 222);
         ops.add("my_zset", "member3", 333);
+        ops.rangeWithScores("my_zset", 0, -1)
+                .forEach(t -> System.out.println(t.getValue() + " : " + t.getScore()));
 
         // add()
         // TypedTupleのSetを渡すことでまとめて登録も可能
@@ -277,6 +282,8 @@ public class SpringDateRedisTest {
         set.add(new DefaultTypedTuple<>("member2", 222D));
         set.add(new DefaultTypedTuple<>("member3", 333D));
         ops.add("my_zset", set);
+        ops.rangeWithScores("my_zset", 0, -1)
+                .forEach(t -> System.out.println(t.getValue() + " : " + t.getScore()));
 
         // range(), rangeWithScores()
         // range()で指定した範囲のメンバを返す。

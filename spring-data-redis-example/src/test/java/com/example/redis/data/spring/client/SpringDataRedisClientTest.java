@@ -34,9 +34,9 @@ public class SpringDataRedisClientTest {
     public void lettuceTest() {
         System.out.println(lettuceRedisTemplate.getConnectionFactory());
 
-        lettuceRedisTemplate.delete("jedis");
-        lettuceRedisTemplate.opsForValue().set("jedis", "jedisTemplate");
-        String got = lettuceRedisTemplate.opsForValue().get("jedis");
-        assertThat(got).isEqualTo("jedisTemplate");
+        lettuceRedisTemplate.delete("lettuce");
+        lettuceRedisTemplate.opsForValue().set("lettuce", "lettuceTemplate");
+        String got = lettuceRedisTemplate.opsForValue().get("lettuce");
+        assertThat(got).isEqualTo("lettuceTemplate");
     }
 }

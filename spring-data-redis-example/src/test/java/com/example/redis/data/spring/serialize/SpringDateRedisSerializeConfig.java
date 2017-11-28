@@ -17,6 +17,7 @@ public class SpringDateRedisSerializeConfig {
     public RedisTemplate<String, User> redisTemplateDefault(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, User> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory);
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
         return redisTemplate;
     }
 
@@ -38,7 +39,6 @@ public class SpringDateRedisSerializeConfig {
         return redisTemplate;
     }
 
-//    @Primary
     @Bean
     public JedisConnectionFactory jedisConnectionFactory() {
         return new JedisConnectionFactory();

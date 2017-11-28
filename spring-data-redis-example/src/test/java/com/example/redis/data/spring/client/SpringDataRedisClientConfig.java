@@ -23,7 +23,6 @@ public class SpringDataRedisClientConfig {
         return redisTemplate;
     }
 
-//    @Primary
     @Bean
     public JedisConnectionFactory jedisConnectionFactory() {
         return new JedisConnectionFactory();
