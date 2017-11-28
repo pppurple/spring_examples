@@ -38,9 +38,14 @@ public class SpringDataRedisTransactionTest {
         redisTemplate.opsForValue().set("my_key", "my_value");
         redisTemplate.opsForSet().add("my_set", "aaa");
         redisTemplate.opsForValue().increment("counter", 1L);
+        System.out.println("increment!!");
         redisTemplate.opsForValue().increment("counter", 1L);
+        System.out.println("increment!!");
+
         Thread.sleep(10_000L);
+
         redisTemplate.opsForValue().increment("counter", 1L);
+        System.out.println("increment!!");
 
         List<Object> results = redisTemplate.exec();
         // transaction end
@@ -66,8 +71,11 @@ public class SpringDataRedisTransactionTest {
 
         redisTemplate.opsForSet().add("my_set", "aaa");
         redisTemplate.opsForValue().increment("counter", 1L);
+        System.out.println("increment!!");
         redisTemplate.opsForValue().increment("counter", 1L);
+        System.out.println("increment!!");
         redisTemplate.opsForValue().increment("counter", 1L);
+        System.out.println("increment!!");
 
         redisTemplate.discard();
         // transaction end
@@ -96,6 +104,7 @@ public class SpringDataRedisTransactionTest {
 
                 operations.opsForSet().add((K)"my_set", (V)"bbb");
                 operations.opsForValue().increment((K)"counter", 1L);
+                System.out.println("increment!!");
 
                 try {
                     Thread.sleep(10_000L);
@@ -103,7 +112,9 @@ public class SpringDataRedisTransactionTest {
                 }
 
                 operations.opsForValue().increment((K)"counter", 1L);
+                System.out.println("increment!!");
                 operations.opsForValue().increment((K)"counter", 1L);
+                System.out.println("increment!!");
 
                 return operations.exec();
             }
@@ -133,11 +144,14 @@ public class SpringDataRedisTransactionTest {
         JedisConnection connection = (JedisConnection) connectionFactory.getConnection();
         connection.getNativeConnection()*/
         redisTemplate.opsForValue().increment("counter", 1);
+        System.out.println("increment!!");
         redisTemplate.opsForValue().increment("counter", 1);
+        System.out.println("increment!!");
 
         Thread.sleep(10_000L);
 
         redisTemplate.opsForValue().increment("counter", 1);
+        System.out.println("increment!!");
     }
 
     @Transactional
@@ -145,11 +159,14 @@ public class SpringDataRedisTransactionTest {
     @Test
     public void rollbackTest() throws InterruptedException {
         redisTemplate.opsForValue().increment("counter", 1);
+        System.out.println("increment!!");
         redisTemplate.opsForValue().increment("counter", 1);
+        System.out.println("increment!!");
 
         Thread.sleep(10_000L);
 
         redisTemplate.opsForValue().increment("counter", 1);
+        System.out.println("increment!!");
     }
 }
 
