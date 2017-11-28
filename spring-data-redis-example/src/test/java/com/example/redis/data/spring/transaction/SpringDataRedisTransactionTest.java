@@ -9,7 +9,11 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.transaction.AfterTransaction;
+import org.springframework.test.context.transaction.BeforeTransaction;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,7 +24,7 @@ public class SpringDataRedisTransactionTest {
     private StringRedisTemplate redisTemplate;
 
     @Before
-    public void before() {
+    public void setup() {
         redisTemplate.delete("my_key");
         redisTemplate.delete("my_set");
         redisTemplate.delete("counter");
@@ -108,6 +112,44 @@ public class SpringDataRedisTransactionTest {
 
         System.out.println(redisTemplate.opsForSet().pop("my_set"));
         System.out.println(redisTemplate.opsForValue().get("counter"));
+    }
+
+    @BeforeTransaction
+    public void before() {
+        redisTemplate.delete("counter");
+        System.out.println(redisTemplate.opsForValue().get("counter"));
+    }
+
+    @AfterTransaction
+    public void after() {
+        System.out.println(redisTemplate.opsForValue().get("counter"));
+    }
+
+    @Transactional
+    @Rollback(false)
+    @Test
+    public void transactionalTest() throws InterruptedException {
+/*        JedisConnectionFactory connectionFactory = (JedisConnectionFactory) redisTemplate.getConnectionFactory();
+        JedisConnection connection = (JedisConnection) connectionFactory.getConnection();
+        connection.getNativeConnection()*/
+        redisTemplate.opsForValue().increment("counter", 1);
+        redisTemplate.opsForValue().increment("counter", 1);
+
+        Thread.sleep(10_000L);
+
+        redisTemplate.opsForValue().increment("counter", 1);
+    }
+
+    @Transactional
+    @Rollback(true)
+    @Test
+    public void rollbackTest() throws InterruptedException {
+        redisTemplate.opsForValue().increment("counter", 1);
+        redisTemplate.opsForValue().increment("counter", 1);
+
+        Thread.sleep(10_000L);
+
+        redisTemplate.opsForValue().increment("counter", 1);
     }
 }
 
