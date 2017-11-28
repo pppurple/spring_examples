@@ -66,4 +66,12 @@ public class SpringDateRedisCacheTest {
          */
     }
 
+    @Test
+    public void evictTest() throws InterruptedException {
+        Person cindy = personService.createPerson("cindy");
+
+        Thread.sleep(5_000L);
+
+        personService.evict("Person:cindy");
+    }
 }
