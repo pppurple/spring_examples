@@ -38,16 +38,6 @@ public class SpringDateRedisCacheTest {
 
         assertThat(andy.getName()).isEqualTo(cachedAndy.getName());
         assertThat(andy.getRandomValue()).isEqualTo(cachedAndy.getRandomValue());
-    /*
-    no cache [3168msec]
-    cache hit [34msec]
-     */
-
-    /*
-        redis-cli
-        > get "Person:andy"
-        "{\"name\":\"andy\",\"randomValue\":-1896696146}"
-     */
     }
 
     @Test
@@ -56,14 +46,6 @@ public class SpringDateRedisCacheTest {
         Person bobby = personService.createPersonWithExpire("bobby");
         long end = System.currentTimeMillis();
         System.out.println("no cache [" + (end - start) + "msec]");
-
-        /*
-        > get "ExpirePerson:bobby"
-        "{\"name\":\"bobby\",\"randomValue\":1551354967}"
-        しばらくして
-        > get "ExpirePerson:bobby"
-        (nil)
-         */
     }
 
     @Test

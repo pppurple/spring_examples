@@ -14,22 +14,6 @@ import java.sql.SQLException;
 
 @Configuration
 public class SpringDataRedisTransactionConfig {
-/*    @Bean
-    public JedisConnectionFactory jedisConnectionFactory() {
-        JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory();
-//        jedisConnectionFactory.setConvertPipelineAndTxResults(false);
-        jedisConnectionFactory.setConvertPipelineAndTxResults(true);
-        return jedisConnectionFactory;
-    }
-
-    @Bean
-    public StringRedisTemplate jedisRedisTemplate(JedisConnectionFactory jedisConnectionFactory) {
-        StringRedisTemplate redisTemplate = new StringRedisTemplate();
-        redisTemplate.setConnectionFactory(jedisConnectionFactory);
-        redisTemplate.setEnableTransactionSupport(true);
-        return redisTemplate;
-    }*/
-
     @Bean
     public StringRedisTemplate redisTemplate() {
         StringRedisTemplate template = new StringRedisTemplate(redisConnectionFactory());

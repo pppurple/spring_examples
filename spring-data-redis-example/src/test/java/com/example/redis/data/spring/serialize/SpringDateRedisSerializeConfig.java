@@ -3,7 +3,6 @@ package com.example.redis.data.spring.serialize;
 import com.example.redis.data.spring.serialize.SpringDateRedisSerializeTest.User;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -13,6 +12,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @Configuration
 public class SpringDateRedisSerializeConfig {
 
+    // JdkSerializationRedisSerializer(default)
     @Bean
     public RedisTemplate<String, User> redisTemplateDefault(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, User> redisTemplate = new RedisTemplate<>();
@@ -21,6 +21,7 @@ public class SpringDateRedisSerializeConfig {
         return redisTemplate;
     }
 
+    // StringRedisSerializer
     @Bean
     public RedisTemplate<String, String> redisTemplateStringSerialize(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
@@ -30,6 +31,7 @@ public class SpringDateRedisSerializeConfig {
         return redisTemplate;
     }
 
+    // Jackson2JsonRedisSerializer
     @Bean
     public RedisTemplate<String, User> redisTemplateJacksonSerialize(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, User> redisTemplate = new RedisTemplate<>();
