@@ -45,6 +45,11 @@ public class WebfluxUserController {
         return repository.delete(id);
     }
 
+    @GetMapping("/users/bp")
+    public Flux<User> getAllWithBackPressure() {
+        return repository.getAll();
+    }
+
     @AllArgsConstructor
     @Data
     public static class User {
