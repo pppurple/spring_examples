@@ -14,6 +14,7 @@ import java.util.stream.IntStream;
 @Repository
 public class UserRepositoryImpl implements UserRepository {
     private Map<Long, User> users = new ConcurrentHashMap<>();
+    private Map<Long, User> manyUsers = new ConcurrentHashMap<>();
 
     @PostConstruct
     public void init() {
@@ -21,17 +22,19 @@ public class UserRepositoryImpl implements UserRepository {
         users.put(2L, new User(2, "Bobby", 32));
         users.put(3L, new User(3, "Cindy", 41));
 
-/*        IntStream.range(1, 1000)
+        IntStream.range(1, 1000)
                 .forEach(i -> {
                     String name = RandomStringUtils.randomAlphabetic(5);
                     User u = new User(i, name,  i * 2);
-                    users.put((long)i, u);
-                });*/
+                    manyUsers.put((long)i, u);
+                });
     }
 
     @Override
     public Mono<User> getById(long id) {
-        return Mono.just(users.get(id)).log();
+        return Mono.justOrEmpty(users.get(id)).log();
+        // justだと存在しない場合エラーになる。
+        // return Mono.just(users.get(id)).log();
     }
 
     @Override
@@ -67,6 +70,12 @@ public class UserRepositoryImpl implements UserRepository {
     public Mono<Void> delete(long id) {
         users.remove(id);
         return Mono.empty();
+    }
+
+    // for backpressure test
+    @Override
+    public Flux<User> getAllManyUsers() {
+        return Flux.fromIterable(manyUsers.values()).log();
     }
 }
 
