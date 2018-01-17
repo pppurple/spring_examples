@@ -44,21 +44,28 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Mono<Void> save(Mono<User> user) {
-        System.out.println("saved.");
-        // return user.doOnNext(u -> users.put(u.getId(), u)).then();
-        return user.map(u -> {
+         return user.doOnNext(u -> {
+             System.out.println("saved:" + u.getId());
+             users.put(u.getId(), u);
+         }).log().then();
+/*        return user.map(u -> {
+            System.out.peintln("saved:" + u.getId());
             users.put(u.getId(), u);
             return u;
-        }).log().then();
+        }).log().then();*/
     }
 
     @Override
     public Mono<Void> saveAll(Flux<User> users) {
-        // return users.doOnNext(u -> this.users.put(u.getId(), u)).then();
-        return users.map(u -> {
+         return users.doOnNext(u -> {
+             System.out.println("saved:" + u.getId());
+             this.users.put(u.getId(), u);
+         }).log().then();
+/*        return users.map(u -> {
+            System.out.println("saved:" + u.getId());
             this.users.put(u.getId(), u);
             return u;
-        }).log().then();
+        }).log().then();*/
     }
 
     @Override
