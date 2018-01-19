@@ -4,12 +4,13 @@ import com.example.functions.router.webflux.spring.component.UserHandler;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.server.RouterFunction;
-import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Flux;
 
-import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
+import static org.springframework.web.reactive.function.server.RequestPredicates.*;
+import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
 @SpringBootApplication
 public class SpringWebfluxRouterFunctionsExampleApplication {
@@ -18,22 +19,28 @@ public class SpringWebfluxRouterFunctionsExampleApplication {
         SpringApplication.run(SpringWebfluxRouterFunctionsExampleApplication.class, args);
     }
 
-/*    public RouterFunction<ServerResponse> routerFunction() {
-        return RouterFunctions.route(GET("/hello"), req -> ServerResponse
-                .ok()
-                .body(Flux.just("Hello", "Router", "Functions!"), String.class));
-    }*/
-
-
+    /*
     @Bean
     public RouterFunction<ServerResponse> routes() {
-        return RouterFunctions.route(GET("/"), req -> ServerResponse.ok()
+        return route(GET("/"), req -> ServerResponse.ok()
                 .body(Flux.just("Hello", "Router", "Functions!"), String.class)
         );
     }
+    */
+
+    /*
+    @Bean
+    public RouterFunction<ServerResponse> routesHello(UserHandler userHandler) {
+        return route(GET("/"), userHandler::hello);
+    }
+    */
 
     @Bean
-    public RouterFunction<ServerResponse> routes2(UserHandler userHandler) {
-        return RouterFunctions.route(GET("/"), userHandler::hello);
+    public RouterFunction<ServerResponse> routes(UserHandler userHandler) {
+        return route(GET("/users/{id}").and(accept(MediaType.APPLICATION_JSON)), userHandler::get)
+                .andRoute(GET("/users").and(accept(MediaType.APPLICATION_JSON)), userHandler::getAll)
+                .andRoute(POST("/users").and(accept(MediaType.APPLICATION_JSON)), userHandler::save)
+                .andRoute(PUT("/users/{id}").and(accept(MediaType.APPLICATION_JSON)), userHandler::update)
+                .andRoute(DELETE("/users/{id}").and(accept(MediaType.APPLICATION_JSON)), userHandler::delete);
     }
 }
