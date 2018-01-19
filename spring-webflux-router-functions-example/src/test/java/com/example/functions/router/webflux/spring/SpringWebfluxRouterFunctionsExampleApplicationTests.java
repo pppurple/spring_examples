@@ -1,4 +1,4 @@
-package com.example.functions.router.webflux.spring.springwebfluxrouterfunctionsexample;
+package com.example.functions.router.webflux.spring;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
