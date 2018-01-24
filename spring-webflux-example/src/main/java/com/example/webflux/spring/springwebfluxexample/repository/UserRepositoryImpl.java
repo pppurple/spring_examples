@@ -44,33 +44,38 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Mono<Void> save(Mono<User> user) {
-         return user.doOnNext(u -> {
-             System.out.println("saved:" + u.getId());
-             users.put(u.getId(), u);
-         }).log().then();
-/*        return user.map(u -> {
-            System.out.peintln("saved:" + u.getId());
+        return user.map(u -> {
+            System.out.println("saved:" + u.getId());
             users.put(u.getId(), u);
             return u;
-        }).log().then();*/
+        }).log().then();
+        /*
+        return user.doOnNext(u -> {
+            System.out.println("saved:" + u.getId());
+            users.put(u.getId(), u);
+        }).log().then();
+         */
     }
 
     @Override
     public Mono<Void> saveAll(Flux<User> users) {
-         return users.doOnNext(u -> {
-             System.out.println("saved:" + u.getId());
-             this.users.put(u.getId(), u);
-         }).log().then();
-/*        return users.map(u -> {
+        return users.map(u -> {
             System.out.println("saved:" + u.getId());
             this.users.put(u.getId(), u);
             return u;
-        }).log().then();*/
+        }).log().then();
+        /*
+        return users.doOnNext(u -> {
+            System.out.println("saved:" + u.getId());
+            this.users.put(u.getId(), u);
+        }).log().then();
+        */
     }
 
     @Override
     public Mono<User> update(long id, Mono<User> user) {
-        return user.doOnNext(u -> users.put(id, u)).log();
+        return user.map(u -> users.put(id, u)).log();
+        // return user.doOnNext(u -> users.put(id, u)).log();
     }
 
     @Override
