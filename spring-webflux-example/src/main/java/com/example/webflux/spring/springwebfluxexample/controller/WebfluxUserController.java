@@ -54,8 +54,8 @@ public class WebfluxUserController {
     @AllArgsConstructor
     @Data
     public static class User {
-        long id;
-        String name;
-        int age;
+        private long id;
+        private String name;
+        private int age;
     }
 }
