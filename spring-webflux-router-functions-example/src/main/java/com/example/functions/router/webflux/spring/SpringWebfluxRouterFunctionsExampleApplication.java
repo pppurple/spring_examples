@@ -10,6 +10,7 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Flux;
 
 import static org.springframework.web.reactive.function.server.RequestPredicates.*;
+import static org.springframework.web.reactive.function.server.RouterFunctions.nest;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
 @SpringBootApplication
@@ -43,4 +44,15 @@ public class SpringWebfluxRouterFunctionsExampleApplication {
                 .andRoute(PUT("/users/{id}").and(accept(MediaType.APPLICATION_JSON)), userHandler::update)
                 .andRoute(DELETE("/users/{id}").and(accept(MediaType.APPLICATION_JSON)), userHandler::delete);
     }
+
+    /*
+    @Bean
+    public RouterFunction<ServerResponse> routesNest(UserHandler userHandler) {
+        return nest(path("users"), route(GET("/{id}"), userHandler::get)
+                .andRoute(GET("/").and(accept(MediaType.APPLICATION_JSON)), userHandler::getAll)
+                .andRoute(POST("/").and(accept(MediaType.APPLICATION_JSON)), userHandler::save)
+                .andRoute(PUT("/{id}").and(accept(MediaType.APPLICATION_JSON)), userHandler::update)
+                .andRoute(DELETE("/{id}").and(accept(MediaType.APPLICATION_JSON)), userHandler::delete));
+    }
+    */
 }
