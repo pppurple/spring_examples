@@ -45,12 +45,6 @@ public class WebfluxUserController {
         return repository.delete(id);
     }
 
-    // for backpressure test
-    @GetMapping("/users/bp")
-    public Flux<User> getAllWithBackPressure() {
-        return repository.getAllManyUsers();
-    }
-
     @AllArgsConstructor
     @Data
     public static class User {

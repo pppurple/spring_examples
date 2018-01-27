@@ -11,6 +11,4 @@ public interface UserRepository {
     Mono<Void> saveAll(Flux<User> users);
     Mono<User> update(long id, Mono<User> user);
     Mono<Void> delete(long id);
-    // for backpressure test
-    Flux<User> getAllManyUsers();
 }
