@@ -34,6 +34,10 @@ public class UserHandler {
         return userMono.flatMap(user -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(fromObject(user)))
                 .switchIfEmpty(notFound);
 
+/*        return repository.getById(userId)
+                .flatMap(user -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(fromObject(user)))
+                .switchIfEmpty(ServerResponse.notFound().build());*/
+
 /*        ServerResponse.ok()
                 .contentType(MediaType.APPLICATION_JSON)*/
     }
@@ -52,9 +56,10 @@ public class UserHandler {
                 .build(repository.save(userMono));
     }
 
-    // TODO
     public Mono<ServerResponse> saveAll(ServerRequest request) {
-        return null;
+        Flux<User> userFlux = request.bodyToFlux(User.class);
+        return ServerResponse.ok()
+                .build(repository.saveAll(userFlux));
     }
 
     public Mono<ServerResponse> update(ServerRequest request) {

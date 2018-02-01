@@ -41,6 +41,7 @@ public class SpringWebfluxRouterFunctionsExampleApplication {
         return route(GET("/users/{id}").and(accept(MediaType.APPLICATION_JSON)), userHandler::get)
                 .andRoute(GET("/users").and(accept(MediaType.APPLICATION_JSON)), userHandler::getAll)
                 .andRoute(POST("/users").and(accept(MediaType.APPLICATION_JSON)), userHandler::save)
+                .andRoute(POST("/users").and(accept(MediaType.APPLICATION_JSON)), userHandler::saveAll)
                 .andRoute(PUT("/users/{id}").and(accept(MediaType.APPLICATION_JSON)), userHandler::update)
                 .andRoute(DELETE("/users/{id}").and(accept(MediaType.APPLICATION_JSON)), userHandler::delete);
     }
@@ -51,6 +52,7 @@ public class SpringWebfluxRouterFunctionsExampleApplication {
         return nest(path("users"), route(GET("/{id}"), userHandler::get)
                 .andRoute(GET("/").and(accept(MediaType.APPLICATION_JSON)), userHandler::getAll)
                 .andRoute(POST("/").and(accept(MediaType.APPLICATION_JSON)), userHandler::save)
+                .andRoute(POST("/users").and(accept(MediaType.APPLICATION_JSON)), userHandler::saveAll)
                 .andRoute(PUT("/{id}").and(accept(MediaType.APPLICATION_JSON)), userHandler::update)
                 .andRoute(DELETE("/{id}").and(accept(MediaType.APPLICATION_JSON)), userHandler::delete));
     }
