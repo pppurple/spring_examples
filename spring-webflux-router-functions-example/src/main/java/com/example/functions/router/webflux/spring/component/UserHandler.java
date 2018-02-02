@@ -31,15 +31,16 @@ public class UserHandler {
 
         Mono<User> userMono = repository.getById(userId);
 
-        return userMono.flatMap(user -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(fromObject(user)))
-                .switchIfEmpty(notFound);
+/*        return userMono.flatMap(user -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(fromObject(user)))
+                .switchIfEmpty(notFound);*/
 
 /*        return repository.getById(userId)
                 .flatMap(user -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(fromObject(user)))
                 .switchIfEmpty(ServerResponse.notFound().build());*/
 
-/*        ServerResponse.ok()
-                .contentType(MediaType.APPLICATION_JSON)*/
+        return ServerResponse.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(userMono, User.class);
     }
 
     public Mono<ServerResponse> getAll(ServerRequest request) {
