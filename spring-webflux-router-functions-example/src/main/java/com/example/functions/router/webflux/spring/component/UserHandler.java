@@ -79,6 +79,7 @@ public class UserHandler {
     public Mono<ServerResponse> delete(ServerRequest request) {
         long userId = Long.valueOf(request.pathVariable("id"));
 
-        return ServerResponse.ok().build(repository.delete(userId));
+        return ServerResponse.ok()
+                .build(repository.delete(userId));
     }
 }
