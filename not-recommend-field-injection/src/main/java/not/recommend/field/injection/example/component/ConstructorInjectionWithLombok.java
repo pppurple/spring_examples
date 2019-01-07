@@ -7,7 +7,8 @@ import not.recommend.field.injection.example.service.MyServiceB;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-//@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+// spring version <= 4.2
+// @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @RequiredArgsConstructor
 @Component
 public class ConstructorInjectionWithLombok {
