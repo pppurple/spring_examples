@@ -11,31 +11,31 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class NotRecommendFieldInjectionApplication implements CommandLineRunner {
-	private final ConstructorInjection constructorInjection;
-	private final FieldInjection fieldInjection;
-	private final SetterInjection setterInjection;
-	private final ConstructorInjectionWithLombok constructorInjectionWithLombok;
+    private final ConstructorInjection constructorInjection;
+    private final FieldInjection fieldInjection;
+    private final SetterInjection setterInjection;
+    private final ConstructorInjectionWithLombok constructorInjectionWithLombok;
 
-	public static void main(String[] args) {
-		SpringApplication.run(NotRecommendFieldInjectionApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(NotRecommendFieldInjectionApplication.class, args);
+    }
 
-	@Override
-	public void run(String... strings) throws Exception {
-		System.out.println("[ConstructorInjection] " + constructorInjection.getText());
-		System.out.println("[FieldInjection] " + fieldInjection.getText());
-		System.out.println("[SetterInjection] " + setterInjection.getText());
-		System.out.println("[ConstructorInjectionWithLombok] " + constructorInjectionWithLombok.getText());
-	}
+    @Override
+    public void run(String... strings) throws Exception {
+        System.out.println("[ConstructorInjection] " + constructorInjection.getText());
+        System.out.println("[FieldInjection] " + fieldInjection.getText());
+        System.out.println("[SetterInjection] " + setterInjection.getText());
+        System.out.println("[ConstructorInjectionWithLombok] " + constructorInjectionWithLombok.getText());
+    }
 
-	@Autowired
-	public NotRecommendFieldInjectionApplication(ConstructorInjection constructorInjection,
-												 FieldInjection fieldInjection,
-												 SetterInjection setterInjection,
-												 ConstructorInjectionWithLombok constructorInjectionWithLombok) {
-		this.constructorInjection = constructorInjection;
-		this.fieldInjection = fieldInjection;
-		this.setterInjection = setterInjection;
-		this.constructorInjectionWithLombok = constructorInjectionWithLombok;
-	}
+    @Autowired
+    public NotRecommendFieldInjectionApplication(ConstructorInjection constructorInjection,
+                                                 FieldInjection fieldInjection,
+                                                 SetterInjection setterInjection,
+                                                 ConstructorInjectionWithLombok constructorInjectionWithLombok) {
+        this.constructorInjection = constructorInjection;
+        this.fieldInjection = fieldInjection;
+        this.setterInjection = setterInjection;
+        this.constructorInjectionWithLombok = constructorInjectionWithLombok;
+    }
 }
