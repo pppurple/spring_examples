@@ -2,13 +2,18 @@ package com.example.retry.spring.springretryexample.service;
 
 import com.example.retry.spring.springretryexample.service.MyService.User;
 import org.springframework.retry.RetryCallback;
+import org.springframework.retry.RetryContext;
+import org.springframework.retry.RetryListener;
 import org.springframework.retry.backoff.ExponentialBackOffPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
-import org.springframework.retry.policy.TimeoutRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Map;
+
+import static com.example.retry.spring.springretryexample.service.MyService.*;
 
 @Service
 public class MyServiceWithRetryTemplate {
@@ -17,7 +22,7 @@ public class MyServiceWithRetryTemplate {
 
         User user = template.execute((RetryCallback<User, Throwable>) retryContext -> {
             System.out.println(LocalDateTime.now() + " retry=" + retryContext.getRetryCount());
-            throw new RuntimeException();
+            return getUserUnsuccessfully();
         });
 
         System.out.println(user);
@@ -28,7 +33,7 @@ public class MyServiceWithRetryTemplate {
 
         User user = template.execute((RetryCallback<User, Throwable>) retryContext -> {
             System.out.println(LocalDateTime.now() + " retry=" + retryContext.getRetryCount());
-            throw new RuntimeException();
+            return getUserUnsuccessfully();
         });
 
         System.out.println(user);
@@ -42,25 +47,44 @@ public class MyServiceWithRetryTemplate {
 
         User user = template.execute((RetryCallback<User, Throwable>) retryContext -> {
             System.out.println(LocalDateTime.now() + " retry=" + retryContext.getRetryCount());
-            throw new RuntimeException();
+            return getUserUnsuccessfully();
         });
 
         System.out.println(user);
     }
 
-    public void executeWithBackoffPolicy() throws Throwable {
+    public void executeWithInitialInterval() throws Throwable {
         RetryTemplate template = new RetryTemplate();
         SimpleRetryPolicy policy = new SimpleRetryPolicy(5);
 
         ExponentialBackOffPolicy backOffPolicy = new ExponentialBackOffPolicy();
-        backOffPolicy.setInitialInterval(2_000L);
+        backOffPolicy.setInitialInterval(1_000L);
 
         template.setRetryPolicy(policy);
         template.setBackOffPolicy(backOffPolicy);
 
         User user = template.execute((RetryCallback<User, Throwable>) retryContext -> {
             System.out.println(LocalDateTime.now() + " retry=" + retryContext.getRetryCount());
-            throw new RuntimeException();
+            return getUserUnsuccessfully();
+        });
+
+        System.out.println(user);
+    }
+
+    public void executeWithMultiplier() throws Throwable {
+        RetryTemplate template = new RetryTemplate();
+        SimpleRetryPolicy policy = new SimpleRetryPolicy(5);
+
+        ExponentialBackOffPolicy backOffPolicy = new ExponentialBackOffPolicy();
+        backOffPolicy.setInitialInterval(1_000L);
+        backOffPolicy.setMultiplier(1.0);
+
+        template.setRetryPolicy(policy);
+        template.setBackOffPolicy(backOffPolicy);
+
+        User user = template.execute((RetryCallback<User, Throwable>) retryContext -> {
+            System.out.println(LocalDateTime.now() + " retry=" + retryContext.getRetryCount());
+            return getUserUnsuccessfully();
         });
 
         System.out.println(user);
@@ -79,7 +103,7 @@ public class MyServiceWithRetryTemplate {
 
         User user = template.execute((RetryCallback<User, Throwable>) retryContext -> {
             System.out.println(LocalDateTime.now() + " retry=" + retryContext.getRetryCount());
-            throw new RuntimeException();
+            return getUserUnsuccessfully();
         });
 
         System.out.println(user);
@@ -89,28 +113,105 @@ public class MyServiceWithRetryTemplate {
         RetryTemplate template = new RetryTemplate();
         SimpleRetryPolicy policy = new SimpleRetryPolicy(5);
 
-//        TimeoutRetryPolicy policy = new TimeoutRetryPolicy();
-//        policy.setTimeout(1_000L);
-
         ExponentialBackOffPolicy backOffPolicy = new ExponentialBackOffPolicy();
         backOffPolicy.setInitialInterval(1_000L);
+        backOffPolicy.setMultiplier(1.0);
 
         template.setRetryPolicy(policy);
         template.setBackOffPolicy(backOffPolicy);
 
         User user = template.execute((RetryCallback<User, Throwable>) retryContext -> {
                     System.out.println(LocalDateTime.now() + " retry=" + retryContext.getRetryCount());
-                    throw new RuntimeException();
+                    return getUserUnsuccessfully();
                 },
                 retryContext -> {
-                    System.out.println("retry!");
-                    return new User("Cindy", 24);
+                    System.out.println("recovered!");
+                    return getUserSuccessfully();
                 });
 
         System.out.println(user);
     }
 
-    public User getUser() {
+    public void executeWithRetryableExceptions() throws Throwable {
+        RetryTemplate template = new RetryTemplate();
+
+        // specify exceptions that are retryable
+        Map<Class<? extends Throwable>, Boolean> retryableExceptions =
+                Collections.singletonMap(UserNotFoundException.class, true);
+        SimpleRetryPolicy policy = new SimpleRetryPolicy(5, retryableExceptions);
+
+        ExponentialBackOffPolicy backOffPolicy = new ExponentialBackOffPolicy();
+        backOffPolicy.setInitialInterval(1_000L);
+        backOffPolicy.setMultiplier(1.0);
+
+        template.setRetryPolicy(policy);
+        template.setBackOffPolicy(backOffPolicy);
+
+        // will not retry
+        template.execute((RetryCallback<User, Throwable>) retryContext -> {
+                    System.out.println(LocalDateTime.now() + " retry=" + retryContext.getRetryCount());
+                    throw new RuntimeException();
+                },
+                retryContext -> {
+                    System.out.println("recovered!");
+                    return getUserSuccessfully();
+                });
+
+        // will retry
+        User user = template.execute((RetryCallback<User, Throwable>) retryContext -> {
+                    System.out.println(LocalDateTime.now() + " retry=" + retryContext.getRetryCount());
+                    throw new UserNotFoundException();
+                },
+                retryContext -> {
+                    System.out.println("recovered!");
+                    return getUserSuccessfully();
+                });
+
+        System.out.println(user);
+    }
+
+    public void executeWithListners() throws Throwable {
+        RetryTemplate template = new RetryTemplate();
+        SimpleRetryPolicy policy = new SimpleRetryPolicy(5);
+
+        RetryListener listener = new RetryListener() {
+            @Override
+            public <T, E extends Throwable> boolean open(RetryContext retryContext, RetryCallback<T, E> retryCallback) {
+                System.out.println("open!!");
+                return true;
+            }
+
+            @Override
+            public <T, E extends Throwable> void close(RetryContext retryContext, RetryCallback<T, E> retryCallback, Throwable throwable) {
+                System.out.println("close.");
+            }
+
+            @Override
+            public <T, E extends Throwable> void onError(RetryContext retryContext, RetryCallback<T, E> retryCallback, Throwable throwable) {
+                System.out.println("error occurred!");
+            }
+        };
+
+        template.setRetryPolicy(policy);
+        template.setListeners(new RetryListener[]{listener});
+
+        User user = template.execute((RetryCallback<User, Throwable>) retryContext -> {
+                    System.out.println(LocalDateTime.now() + " retry=" + retryContext.getRetryCount());
+                    return getUserUnsuccessfully();
+                },
+                retryContext -> {
+                    System.out.println("recovered!");
+                    return getUserSuccessfully();
+                });
+
+        System.out.println(user);
+    }
+
+    public User getUserSuccessfully() {
         return new User("Bobby", 20);
+    }
+
+    public User getUserUnsuccessfully() throws UserNotFoundException {
+        throw new UserNotFoundException();
     }
 }
