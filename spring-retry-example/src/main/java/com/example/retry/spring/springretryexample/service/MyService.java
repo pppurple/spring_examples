@@ -66,4 +66,7 @@ public class MyService {
 
     public static class UserNotFoundException extends Exception {
     }
+
+    public static class UnexpectedException extends Exception {
+    }
 }
