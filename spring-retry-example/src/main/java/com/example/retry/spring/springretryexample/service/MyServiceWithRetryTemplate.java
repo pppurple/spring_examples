@@ -41,9 +41,9 @@ public class MyServiceWithRetryTemplate {
 
     public void executeWithRetryPolicy() throws Throwable {
         RetryTemplate template = new RetryTemplate();
-        SimpleRetryPolicy policy = new SimpleRetryPolicy(5);
+        SimpleRetryPolicy retryPolicy = new SimpleRetryPolicy(5);
 
-        template.setRetryPolicy(policy);
+        template.setRetryPolicy(retryPolicy);
 
         User user = template.execute((RetryCallback<User, Throwable>) retryContext -> {
             System.out.println(LocalDateTime.now() + " retry=" + retryContext.getRetryCount());
@@ -55,12 +55,12 @@ public class MyServiceWithRetryTemplate {
 
     public void executeWithInitialInterval() throws Throwable {
         RetryTemplate template = new RetryTemplate();
-        SimpleRetryPolicy policy = new SimpleRetryPolicy(5);
+        SimpleRetryPolicy retryPolicy = new SimpleRetryPolicy(5);
 
         ExponentialBackOffPolicy backOffPolicy = new ExponentialBackOffPolicy();
         backOffPolicy.setInitialInterval(1_000L);
 
-        template.setRetryPolicy(policy);
+        template.setRetryPolicy(retryPolicy);
         template.setBackOffPolicy(backOffPolicy);
 
         User user = template.execute((RetryCallback<User, Throwable>) retryContext -> {
@@ -73,13 +73,13 @@ public class MyServiceWithRetryTemplate {
 
     public void executeWithMultiplier() throws Throwable {
         RetryTemplate template = new RetryTemplate();
-        SimpleRetryPolicy policy = new SimpleRetryPolicy(5);
+        SimpleRetryPolicy retryPolicy = new SimpleRetryPolicy(5);
 
         ExponentialBackOffPolicy backOffPolicy = new ExponentialBackOffPolicy();
         backOffPolicy.setInitialInterval(1_000L);
         backOffPolicy.setMultiplier(1.0);
 
-        template.setRetryPolicy(policy);
+        template.setRetryPolicy(retryPolicy);
         template.setBackOffPolicy(backOffPolicy);
 
         User user = template.execute((RetryCallback<User, Throwable>) retryContext -> {
@@ -92,13 +92,13 @@ public class MyServiceWithRetryTemplate {
 
     public void executeWithMaxInternal() throws Throwable {
         RetryTemplate template = new RetryTemplate();
-        SimpleRetryPolicy policy = new SimpleRetryPolicy(5);
+        SimpleRetryPolicy retryPolicy = new SimpleRetryPolicy(5);
 
         ExponentialBackOffPolicy backOffPolicy = new ExponentialBackOffPolicy();
         backOffPolicy.setInitialInterval(2_000L);
         backOffPolicy.setMaxInterval(4_000L);
 
-        template.setRetryPolicy(policy);
+        template.setRetryPolicy(retryPolicy);
         template.setBackOffPolicy(backOffPolicy);
 
         User user = template.execute((RetryCallback<User, Throwable>) retryContext -> {
@@ -111,13 +111,13 @@ public class MyServiceWithRetryTemplate {
 
     public void executeWithRecovery() throws Throwable {
         RetryTemplate template = new RetryTemplate();
-        SimpleRetryPolicy policy = new SimpleRetryPolicy(5);
+        SimpleRetryPolicy retryPolicy = new SimpleRetryPolicy(5);
 
         ExponentialBackOffPolicy backOffPolicy = new ExponentialBackOffPolicy();
         backOffPolicy.setInitialInterval(1_000L);
         backOffPolicy.setMultiplier(1.0);
 
-        template.setRetryPolicy(policy);
+        template.setRetryPolicy(retryPolicy);
         template.setBackOffPolicy(backOffPolicy);
 
         User user = template.execute((RetryCallback<User, Throwable>) retryContext -> {
@@ -138,19 +138,19 @@ public class MyServiceWithRetryTemplate {
         // specify exceptions that are retryable
         Map<Class<? extends Throwable>, Boolean> retryableExceptions =
                 Collections.singletonMap(UserNotFoundException.class, true);
-        SimpleRetryPolicy policy = new SimpleRetryPolicy(5, retryableExceptions);
+        SimpleRetryPolicy retryPolicy = new SimpleRetryPolicy(5, retryableExceptions);
 
         ExponentialBackOffPolicy backOffPolicy = new ExponentialBackOffPolicy();
         backOffPolicy.setInitialInterval(1_000L);
         backOffPolicy.setMultiplier(1.0);
 
-        template.setRetryPolicy(policy);
+        template.setRetryPolicy(retryPolicy);
         template.setBackOffPolicy(backOffPolicy);
 
         // will not retry
         template.execute((RetryCallback<User, Throwable>) retryContext -> {
                     System.out.println(LocalDateTime.now() + " retry=" + retryContext.getRetryCount());
-                    throw new RuntimeException();
+                    throw new UnexpectedException();
                 },
                 retryContext -> {
                     System.out.println("recovered!");
@@ -170,7 +170,7 @@ public class MyServiceWithRetryTemplate {
         System.out.println(user);
     }
 
-    public void executeWithListners() throws Throwable {
+    public void executeWithListeners() throws Throwable {
         RetryTemplate template = new RetryTemplate();
         SimpleRetryPolicy policy = new SimpleRetryPolicy(5);
 
