@@ -147,17 +147,8 @@ public class MyServiceWithRetryTemplate {
         template.setRetryPolicy(retryPolicy);
         template.setBackOffPolicy(backOffPolicy);
 
-        // will not retry
-        template.execute((RetryCallback<User, Throwable>) retryContext -> {
-                    System.out.println(LocalDateTime.now() + " retry=" + retryContext.getRetryCount());
-                    throw new UnexpectedException();
-                },
-                retryContext -> {
-                    System.out.println("recovered!");
-                    return getUserSuccessfully();
-                });
-
         // will retry
+        System.out.println("will retry");
         User user = template.execute((RetryCallback<User, Throwable>) retryContext -> {
                     System.out.println(LocalDateTime.now() + " retry=" + retryContext.getRetryCount());
                     throw new UserNotFoundException();
@@ -166,8 +157,18 @@ public class MyServiceWithRetryTemplate {
                     System.out.println("recovered!");
                     return getUserSuccessfully();
                 });
-
         System.out.println(user);
+
+        // will not retry
+        System.out.println("will not retry");
+        template.execute((RetryCallback<User, Throwable>) retryContext -> {
+                    System.out.println(LocalDateTime.now() + " retry=" + retryContext.getRetryCount());
+                    throw new UnexpectedException();
+                },
+                retryContext -> {
+                    System.out.println("recovered!");
+                    return getUserSuccessfully();
+                });
     }
 
     public void executeWithListeners() throws Throwable {
