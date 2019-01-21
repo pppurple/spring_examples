@@ -42,7 +42,7 @@ public class SpringRetryExampleApplication implements CommandLineRunner {
             myServiceWithRetryTemplate.executeWithMaxInternal();
             myServiceWithRetryTemplate.executeWithRecovery();
             myServiceWithRetryTemplate.executeWithRetryableExceptions();
-            myServiceWithRetryTemplate.executeWithListners();
+            myServiceWithRetryTemplate.executeWithListeners();
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }
